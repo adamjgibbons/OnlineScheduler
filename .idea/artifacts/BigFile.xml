@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="BigFile">
+    <output-path>$PROJECT_DIR$/out/artifacts/BigFile</output-path>
+    <root id="archive" name="BigFile.jar" />
+  </artifact>
+</component>
