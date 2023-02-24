@@ -39,5 +39,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class SchedulerServiceImpl implements SchedulerService {
 
-
+    @Override
+    public Object getDataFromBar(String keywords) {
+        System.out.println(keywords);
+        return null;
+    }
 }

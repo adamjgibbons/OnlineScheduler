@@ -36,9 +36,15 @@ package com.vanderbilt.project.Scheduler.controllers;
 
 import com.vanderbilt.project.Scheduler.service.SchedulerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.IOException;
 
 @Controller
 public class SchedulerController {
@@ -46,14 +52,39 @@ public class SchedulerController {
     @Autowired
     private SchedulerService schedulerService;
 
-    @GetMapping({"/", "/home"})
+    @GetMapping({"/", "/ViewSchedules"})
     public String Scheduler(Model model){
-        return "home";
+        try {
+            String output = Runtime.getRuntime().exec("Python3 pythonFile.py >> pythonOutput.txt").toString();
+            System.out.println(output);
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return "ViewSchedules";
     }
 
-    @GetMapping({"/PageOne"})
-    public String pageOne(Model model){
-        return "PageOne";
+    @GetMapping({"/EditTimeFrame"})
+    public String editTimeFrame(Model model){
+        return "EditTimeFrame";
+    }
+
+    @GetMapping({"/EditPerson"})
+    public String editPerson(Model model){
+        return "EditPerson";
+    }
+
+    @GetMapping({"/AddPerson"})
+    public String addPerson(Model model){
+        return "AddPerson";
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/getDataFromBar", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Object getDataFromBar(@RequestBody String keywords, Model model) {
+
+        return schedulerService.getDataFromBar(keywords);
     }
 
 }

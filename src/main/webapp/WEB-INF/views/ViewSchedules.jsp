@@ -38,7 +38,6 @@ SOFTWARE.
 
     <link rel="stylesheet" href="/css/style.css">
     <script src="/js/main.js"></script>
-    <script src="/js/Document.js"></script>
 
     <title>BeHomePage | Scheduler</title>
 </head>
@@ -48,8 +47,10 @@ SOFTWARE.
         <div class="container">
             <h1>Scheduler</h1>
             <ul>
-                <li><a class="selected" href="home">home</a></li>
-                <li><a href="PageOne">PageOne</a></li>
+                <li><a class="selected" href="ViewSchedules">View Schedules</a></li>
+                <li><a href="EditTimeFrame">Edit Time Frame</a></li>
+                <li><a href="AddPerson">Add People</a></li>
+                <li><a href="EditPerson">Edit People</a></li>
             </ul>
         </div>
     </header>
@@ -75,7 +76,62 @@ SOFTWARE.
     </div>
 
 </body>
+<script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // populate results
+            // search bar
+            const clearIcon = document.querySelector(".clear-icon");
+            const searchBar = document.querySelector(".search");
+            document.querySelector(".search").addEventListener("keyup", () => {
+                if (searchBar.value && clearIcon.style.visibility != "visible") {
+                    clearIcon.style.visibility = "visible";
+                } else if (!searchBar.value) {
+                    clearIcon.style.visibility = "hidden";
+                }
+            });
+        })
 
+        // search bar event listener
+        function search(e) {
+            if (event.key === 'Enter') {
+                if (e.value.length > 0) {
+                    sendData(e.value);
+                    document.getElementById("resultContainer").classList.remove("hidden");
+                } else {
+                    displayCard("error", "Error: input cannot be blank");
+                }
+            }
+        }
+
+        function sendData(keywords) {
+            let data = {};
+                let contextPath = "${pageContext.request.contextPath}";
+                let url = contextPath+ "/getDataFromBar";
+                // console.log(url);
+                fetch(url, {
+                                method: "POST",
+                                body: JSON.stringify(keywords),
+                                headers:{
+                                    "Content-Type": "application/json"
+                                }
+                            })
+                .then(httpresponseservlet => {
+                    if (httpresponseservlet.ok) {
+                        return httpresponseservlet.json();
+                    } else {
+                        //alert("NO!!!!!!!! Bad Http Status: " + httpresponseservlet.status);
+                    }
+                }).then(answer => {
+                   console.log(answer);
+                   // fileArray = answer;
+                   // populateData();
+                }).catch(error => {
+                    //alert("NO!!!!!!! Error = " + error);
+                }).finally(() => {
+
+                });
+        }
+</script>
 </html>
 
 <style>

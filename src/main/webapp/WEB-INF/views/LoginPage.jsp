@@ -1,14 +1,9 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
 <!--
 -- AUTHORS --
 + Adam Gibbons
-
--- DESCRIPTION: --
-This is the file that shows something
 
 --------------------------------------
 
@@ -35,6 +30,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
 
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -42,52 +38,16 @@ SOFTWARE.
 
     <link rel="stylesheet" href="/css/style.css">
     <script src="/js/main.js"></script>
+    <script src="/js/Document.js"></script>
 
-    <title>Page 1 | Scheduler</title>
+    <title>BeHomePage | Scheduler</title>
 </head>
 
 <body>
     <header class="navBar">
         <div class="container">
             <h1>Scheduler</h1>
-            <ul>
-                <li><a href="home">home</a></li>
-                <li><a class="selected" href="pageOne">PageOne</a></li>
-            </ul>
         </div>
     </header>
-
-    <div class="critArea">
-        <h3 class="criteria"> How to work website</h3>
-          <ul class="criteria-list">
-            <li>Here I want to list instructions.</li>
-            <li>On how to.</li>
-            <li>Use this website.</li>
-          </ul>
-          </div>
-
-    <div id="card">
-        <img src="/imgs/cross.png">
-        <p>Error: something went wrong</p>
-    </div>
-
 </body>
-
 </html>
-
-<style>
-    .critArea {
-
-        height: px;
-        width: 700px;
-        border-radius: 5px;
-        margin: 10px auto;
-        margin-bottom: -70px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        color: var(--purple);
-    }
-
-</style>

@@ -35,4 +35,5 @@ package com.vanderbilt.project.Scheduler.service;
 
 public interface SchedulerService {
 
+    Object getDataFromBar(String keywords);
 }
