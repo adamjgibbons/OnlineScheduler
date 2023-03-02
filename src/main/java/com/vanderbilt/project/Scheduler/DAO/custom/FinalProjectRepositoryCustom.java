@@ -1,27 +1,18 @@
 /**
-
  -- AUTHORS --
  + Adam Gibbons
 
- -- DESCRIPTION: --
- This is the service interface. Functions that are used in implementation are definend here
-
  --------------------------------------
-
  The MIT License (MIT)
-
  Copyright (c) 2021 OpenFin
-
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
-
  The above copyright notice and this permission notice shall be included in all
  copies or substantial portions of the Software.
-
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -31,15 +22,16 @@
  SOFTWARE.
  **/
 
-package com.vanderbilt.project.Scheduler.service;
-
+package com.vanderbilt.project.Scheduler.DAO.custom;
+import com.vanderbilt.project.Scheduler.DTO.Company;
 import com.vanderbilt.project.Scheduler.DTO.Person;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public interface SchedulerService {
+public interface FinalProjectRepositoryCustom{
 
-    Object getDataFromBar(String keywords);
-
-    ArrayList<Person> getAllPeopleFromCurrentCompany();
+    ArrayList<Company> getCompanyData();
+    ArrayList<Person> getAllPeople();
+    ArrayList<Person> getAllPeopleFromCurrentCompany(String companyName);
 }
