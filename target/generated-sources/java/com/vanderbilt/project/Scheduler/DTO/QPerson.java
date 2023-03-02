@@ -24,11 +24,11 @@ public class QPerson extends EntityPathBase<Person> {
 
     public final QCompany company;
 
-    public final StringPath companyScheduleJson = createString("companyScheduleJson");
-
     public final NumberPath<Integer> personId = createNumber("personId", Integer.class);
 
     public final StringPath personName = createString("personName");
+
+    public final StringPath personScheduleJson = createString("personScheduleJson");
 
     public QPerson(String variable) {
         this(Person.class, forVariable(variable), INITS);
