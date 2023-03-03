@@ -1,21 +1,7 @@
 /**
  -- AUTHORS --
- + Hamza Kamran
  + Adam Gibbons
- + Kimmy Thach
- -- DESCRIPTION: --
- This is the CRUD repository.
- -- FUNCTIONAL REQUIREMENT(S) MET: --
- + None
- -- NONFUNCTIONAL REQUIREMENT(S) MET: --
- + None
- -- USER INTERFACE REQUIREMENT(S) MET: --
- + None
- -- SOFTWARE INTERFACE REQUIREMENT(S) MET: --
- + None
- -- LOGICAL DATABASE REQUIREMENT(S) MET: --
- + None
- --------------------------------------
+
  The MIT License (MIT)
  Copyright (c) 2021 OpenFin
  Permission is hereby granted, free of charge, to any person obtaining a copy
