@@ -1,22 +1,28 @@
 CREATE SCHEMA `FinalProject` DEFAULT CHARACTER SET utf8;
 
-drop table if exists `companies`;
 drop table if exists `people`;
-
-CREATE TABLE people (
-    person_id INTEGER AUTO_INCREMENT PRIMARY KEY
-    ,person_name VARCHAR(64)  NOT NULL
- --   ,is_manager BOOLEAN NOT NULL
- --   ,desired_weekly_hours INTEGER NOT NULL
-    ,person_scheduleJson text NOT NULL
-);
+drop table if exists `companies`;
 
 CREATE TABLE companies (
     company_id INTEGER AUTO_INCREMENT PRIMARY KEY
-    ,person_id INTEGER NOT NULL
     ,company_name VARCHAR(64)  NOT NULL
-    ,company_password varchar(64)  NOT NULL
-    ,company_scheduleJson text NOT NULL
-    ,CONSTRAINT fk_event_id FOREIGN KEY (person_id)
-        REFERENCES people(person_id)
+    ,company_schedule_json text NOT NULL
 );
+
+
+CREATE TABLE people (
+    person_id INTEGER AUTO_INCREMENT PRIMARY KEY
+    ,company_id INTEGER NOT NULL
+    ,person_name VARCHAR(64)  NOT NULL
+    ,person_schedule_json text NOT NULL
+	,CONSTRAINT fk_event_id FOREIGN KEY (company_id)
+        REFERENCES companies(company_id)
+);
+
+
+INSERT INTO companies (company_name,company_schedule_json)
+VALUES ("boeing", "EMpty data for now");
+INSERT INTO people (company_id, person_name, person_schedule_json)
+VALUES (1, "Adam", "njafenijnifnjisafdd");
+select * from companies;
+select * from people;
