@@ -101,8 +101,13 @@
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>top.jfunc.json</groupId>
+            <artifactId>Json-Gson</artifactId>
+            <version>1.0</version>
+        </dependency>
 
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>

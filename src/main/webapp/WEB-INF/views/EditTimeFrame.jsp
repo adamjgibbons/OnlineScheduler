@@ -1,14 +1,9 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
 <!--
 -- AUTHORS --
 + Adam Gibbons
-
--- DESCRIPTION: --
-This is the file that shows something
 
 --------------------------------------
 
@@ -35,6 +30,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
 
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -43,7 +39,7 @@ SOFTWARE.
     <link rel="stylesheet" href="/css/style.css">
     <script src="/js/main.js"></script>
 
-    <title>Page 1 | Scheduler</title>
+    <title>BeHomePage | Scheduler</title>
 </head>
 
 <body>
@@ -59,37 +55,214 @@ SOFTWARE.
         </div>
     </header>
 
-    <div class="critArea">
-        <h3 class="criteria"> How to work website</h3>
-          <ul class="criteria-list">
-            <li>Here I want to list instructions.</li>
-            <li>On how to.</li>
-            <li>Use this website.</li>
-          </ul>
-          </div>
+    <br></br>
+    <form id="schedule-form">
+        <br><br>
+        <table id="schedule-table">
+            <thead>
+              <tr>
+                <td>Day</td>
+                <td>Date</td>
+                <td>Employees Needed</td>
+                <td>Hours to Cover</td>
+                <td>Manager Needed</td>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+      <input type="button" value="Submit" onclick="sendData()">
+    </form>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+            generateTable();
+            getAllPeople();
 
-    <div id="card">
-        <img src="/imgs/cross.png">
-        <p>Error: something went wrong</p>
-    </div>
+            })
 
-</body>
+    function generateTable(){
+        // Add the input fields for each day
+        for (let i = 0; i < 3; i++) {
+          let date = new Date();
+          date.setDate(date.getDate() + i);
+          let day = date.toLocaleDateString('en-US', {weekday: 'long'});
+          // console.log(day);
+          let row = `
+            <tr>
+              <td>`+day+`</td>
+              <td>`+date.toLocaleDateString('en-US')+`</td>
+              <td><input type="text" name="numberOfEmployeesNeeded"></td>
+              <td>
+                <input type="time" name="start-time"> to
+                <input type="time" name="end-time">
+              </td>
+                <td>
+                          <input type="checkbox" value="yes"> Yes if checked
+                </td>
+            </tr>
+          `;
+          document.querySelector('#schedule-table').innerHTML += row;
+        }
+    }
 
+    function sendData(keywords) {
+        let data = {};
+
+            console.log(name);
+            let timesWeNeedWorkers = [];
+            let shifts= "morning";
+            let timeAvailable = {};
+            let dayOfWeek = "";
+            let numberOfEmployeesNeeded = "";
+            let from = "";
+            let to = "";
+            let managerNeeded = "";
+            let table = document.getElementById("schedule-table");
+            for (var i = 1, row; row = table.rows[i]; i++) {
+               for (var j = 0, col; col = row.cells[j]; j++) {
+                    if (j==0)
+                    {
+                        dayOfWeek = col.innerHTML;
+                    }
+                    if (j==2)
+                    {
+                        numberOfEmployeesNeeded = col.getElementsByTagName('input')[0].value
+                    }
+                    if(j==3)
+                    {
+                        from = col.getElementsByTagName('input')[0].value;
+                        to = col.getElementsByTagName('input')[1].value;
+                    }
+                    if (j==4)
+                    {
+                        if (col.getElementsByTagName('input')[0].checked== true)
+                        {
+                            managerNeeded = "true";
+                        }
+                        else {
+                            managerNeeded = "false";
+                        }
+
+                        timeAvailable = {
+                            shifts: "morning",
+                            numberOfEmployeesNeeded: numberOfEmployeesNeeded,
+                            from: from,
+                            to: to,
+                            managerNeeded: managerNeeded
+                        };
+                        timesWeNeedWorkers.push(timeAvailable);
+                    }
+               }
+            }
+
+            data[dayOfWeek] = {timesWeNeedWorkers: timesWeNeedWorkers};
+
+            let contextPath = "${pageContext.request.contextPath}";
+            let url = contextPath+ "/saveCompanySchedule";
+            console.log(url);
+            fetch(url, {
+                            method: "POST",
+                            body: JSON.stringify(data),
+                            headers:{
+                                "Content-Type": "application/json"
+                            }
+                        })
+            .then(httpresponseservlet => {
+                if (httpresponseservlet.ok) {
+                    return httpresponseservlet.json();
+                } else {
+                    //alert("NO!!!!!!!! Bad Http Status: " + httpresponseservlet.status);
+                }
+            }).then(answer => {
+               console.log(answer);
+            }).catch(error => {
+                //alert("NO!!!!!!! Error = " + error);
+            }).finally(() => {
+
+            });
+    }
+
+        function getAllPeople() {
+            let data = {};
+                let contextPath = "${pageContext.request.contextPath}";
+                let url = contextPath+ "/getAllPeople";
+                // console.log(url);
+                fetch(url, {
+                                method: "POST",
+                                body: JSON.stringify("String"),
+                                headers:{
+                                    "Content-Type": "application/json"
+                                }
+                            })
+                .then(httpresponseservlet => {
+                    if (httpresponseservlet.ok) {
+                        return httpresponseservlet.json();
+                    } else {
+                        //alert("NO!!!!!!!! Bad Http Status: " + httpresponseservlet.status);
+                    }
+                }).then(answer => {
+                   console.log(answer);
+
+                }).catch(error => {
+                    //alert("NO!!!!!!! Error = " + error);
+                }).finally(() => {
+
+                });
+        }
+
+
+
+  // Handle the form submit button click
+  function submitForm() {
+    let name = $('input[name="name"]').val();
+    let manager = $('input[name="manager"]:checked').val();
+    let desiredHours = $('input[name="desired-hours"]').val();
+    console.log(name);
+    let tableData = [];
+    let table = document.getElementById("schedule-table");
+    for (var i = 0, row; row = table.rows[i]; i++) {
+      for (var j = 0, col; col = row.cells[j]; j++) {
+        var inputs = col.querySelectorAll("input");
+
+      }
+    }
+    $('#schedule-table tr').each(function() {
+      // let startTime= $(this).find('td:nth-child(4)').querySelectorAll("input");
+      console.log($(this).find('td:nth-child(4)'));
+      let rowData = {
+        day: $(this).find('td:nth-child(1)').text(),
+        endTime: $(this).find('td:nth-child(4)').find('.input[name="start-time"]').text(),
+      };
+      tableData.push(rowData);
+    });
+    let data = {
+      name: name,
+      manager: manager,
+      desiredHours: desiredHours,
+      tableData: tableData
+    };
+  }
+    </script>
+  </body>
 </html>
 
 <style>
-    .critArea {
+    #schedule-table {
+  border-collapse: collapse;
+  width: 100%;
+}
 
-        height: px;
-        width: 700px;
-        border-radius: 5px;
-        margin: 10px auto;
-        margin-bottom: -70px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        color: var(--purple);
-    }
+#schedule-table th, #schedule-table td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+}
+
+#schedule-table th {
+  background-color: lightgray;
+}
 
 </style>
+
+</body>
+</html>

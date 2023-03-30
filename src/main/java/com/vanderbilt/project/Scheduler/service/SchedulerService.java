@@ -33,6 +33,7 @@
 
 package com.vanderbilt.project.Scheduler.service;
 
+import com.vanderbilt.project.Scheduler.DTO.Company;
 import com.vanderbilt.project.Scheduler.DTO.Person;
 
 import java.util.ArrayList;
@@ -40,6 +41,10 @@ import java.util.ArrayList;
 public interface SchedulerService {
 
     Object getDataFromBar(String keywords);
+    Object savePerson(Person person);
+    Object saveCompanySchedule(Company company);
+
+    void executeAlgorithm();
 
     ArrayList<Person> getAllPeopleFromCurrentCompany();
 }

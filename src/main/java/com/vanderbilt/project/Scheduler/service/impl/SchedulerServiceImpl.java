@@ -34,6 +34,7 @@
 package com.vanderbilt.project.Scheduler.service.impl;
 
 import com.vanderbilt.project.Scheduler.DAO.FinalProjectRepository;
+import com.vanderbilt.project.Scheduler.DTO.Company;
 import com.vanderbilt.project.Scheduler.DTO.Person;
 import com.vanderbilt.project.Scheduler.service.SchedulerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SchedulerServiceImpl implements SchedulerService {
@@ -54,6 +61,121 @@ public class SchedulerServiceImpl implements SchedulerService {
         System.out.println(keywords);
         return null;
     }
+
+    @Override
+    public Object savePerson(Person person) {
+        System.out.println("enter the save the data");
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = "";
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails)principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+
+        ArrayList<Company> companyList = finalProjectRepository.getCompanyData();
+        for (Company company: companyList) {
+            if(company.getCompanyName().equals(username))
+            {
+                person.setCompany(company);
+                List<Person> listOfPeople = company.getPersonList();
+                listOfPeople.add(person);
+                System.out.println("Saving the data");
+                finalProjectRepository.save(company);
+                return null;
+            }
+        }
+
+        return null;
+
+    }
+
+    @Override
+    public Object saveCompanySchedule(Company company) {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = "";
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+
+        company.setCompanyName(username);
+        finalProjectRepository.save(company);
+
+        return null;
+    }
+
+    public void executeAlgorithm() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = "";
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails)principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        String officialPeopleJson = "{ \"People\": [";
+        String officialSchedule = "";
+        ArrayList<Company> companyList = finalProjectRepository.getCompanyData();
+        for (Company company: companyList) {
+            if(company.getCompanyName().equals(username))
+            {
+                officialSchedule = company.getCompanyScheduleJson();
+                List<Person> peopleList = company.getPersonList();
+                for (int i =0; i<peopleList.size(); i++)
+                {
+                    officialPeopleJson = officialPeopleJson + peopleList.get(i).getPersonScheduleJson();
+                    if(i+1<peopleList.size())
+                    {
+                        officialPeopleJson = officialPeopleJson + ", ";
+                    }
+                    else {
+                        officialPeopleJson = officialPeopleJson + "] }";
+                    }
+                }
+            }
+        }
+        try {
+            FileWriter myWriter = new FileWriter("People.json");
+            myWriter.write(officialPeopleJson);
+            myWriter.close();
+        } catch (IOException e) {
+        System.out.println("An error occurred.");
+        e.printStackTrace();
+        }
+        try {
+            FileWriter myWriter = new FileWriter("Schedule.json");
+            myWriter.write(officialSchedule);
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+        try {
+            Path path = Files.createTempFile("Schedule", ".json");
+            while(Files.exists(path)==false)
+            {
+                System.out.println("Waiting...");
+
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        try {
+            String output = Runtime.getRuntime().exec("python pythonOptimizer.py").toString();
+            System.out.println(output);
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public ArrayList<Person> getAllPeopleFromCurrentCompany(){

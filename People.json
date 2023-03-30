@@ -1,0 +1,1 @@
+{ "People": [{"id":"Vanderbilt","isManager":false,"hoursDesired":"8","Saturday":{"freeTimes":[{"shifts":"morning","from":"17:00","to":"18:00"},{"shifts":"morning","from":"18:00","to":"19:00"},{"shifts":"morning","from":"19:00","to":"20:00"}]}}] }

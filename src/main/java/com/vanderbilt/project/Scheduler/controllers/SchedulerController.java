@@ -34,6 +34,9 @@
 
 package com.vanderbilt.project.Scheduler.controllers;
 
+import com.google.gson.Gson;
+import com.vanderbilt.project.Scheduler.DTO.Company;
+import com.vanderbilt.project.Scheduler.DTO.Person;
 import com.vanderbilt.project.Scheduler.service.SchedulerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -41,12 +44,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.Console;
 import java.io.IOException;
+import java.util.Map;
 
 @Controller
 public class SchedulerController {
@@ -56,14 +58,7 @@ public class SchedulerController {
 
     @GetMapping({"/", "/ViewSchedules"})
     public String Scheduler(Model model){
-        try {
-            String output = Runtime.getRuntime().exec("Python3 pythonFile.py >> pythonOutput.txt").toString();
-            System.out.println(output);
-
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        schedulerService.executeAlgorithm();
         return "ViewSchedules";
     }
 
@@ -88,6 +83,42 @@ public class SchedulerController {
     public Object getDataFromBar(@RequestBody String keywords, Model model) {
 
         return schedulerService.getDataFromBar(keywords);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/savePerson", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Object savePerson(@RequestBody String keywords, Model model) {
+
+        Map jsonJavaRootObject = new Gson().fromJson(keywords, Map.class);
+        System.out.println(jsonJavaRootObject.get("id"));
+
+        Person person = new Person();
+        person.setPersonName(jsonJavaRootObject.get("id").toString());
+        person.setPersonScheduleJson(keywords);
+
+        return schedulerService.savePerson(person);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/saveCompanySchedule", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Object saveCompanySchedule(@RequestBody String keywords, Model model) {
+
+        Map jsonJavaRootObject = new Gson().fromJson(keywords, Map.class);
+        System.out.println(jsonJavaRootObject.get("id"));
+
+        Company company = new Company();
+        company.setCompanyScheduleJson(keywords);
+
+        System.out.println(keywords);
+
+        return schedulerService.saveCompanySchedule(company);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/getAllPeople", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Object getAllPeople(@RequestBody String keywords, Model model) {
+        System.out.println("You get here");
+        return schedulerService.getAllPeopleFromCurrentCompany();
     }
 
 }

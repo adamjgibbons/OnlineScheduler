@@ -38,7 +38,6 @@ SOFTWARE.
 
     <link rel="stylesheet" href="/css/style.css">
     <script src="/js/main.js"></script>
-    <script src="/js/Document.js"></script>
 
     <title>BeHomePage | Scheduler</title>
 </head>
@@ -78,17 +77,18 @@ SOFTWARE.
             <tbody>
             </tbody>
           </table>
-      <input type="button" value="Submit" onclick="submitForm()">
+      <input type="button" value="Submit" onclick="sendData()">
     </form>
     <script>
     document.addEventListener("DOMContentLoaded", () => {
             generateTable();
+            getAllPeople();
 
             })
 
     function generateTable(){
         // Add the input fields for each day
-        for (let i = 0; i < 14; i++) {
+        for (let i = 0; i < 3; i++) {
           let date = new Date();
           date.setDate(date.getDate() + i);
           let day = date.toLocaleDateString('en-US', {weekday: 'long'});
@@ -110,12 +110,55 @@ SOFTWARE.
 
     function sendData(keywords) {
         let data = {};
+
+            let name = document.getElementById("name").value;
+            let desiredHours = document.getElementById("desired-hours").value;
+            let manager = document.getElementById('manager-yes').checked;
+
+            console.log(name);
+            let freeTimes = [];
+            let timeAvailable = {};
+            let dayOfWeek = "";
+            let from = "";
+            let to = "";
+            let shifts = "morning";
+            let table = document.getElementById("schedule-table");
+            for (var i = 1, row; row = table.rows[i]; i++) {
+               for (var j = 0, col; col = row.cells[j]; j++) {
+                    if (j==0)
+                    {
+                        dayOfWeek = col.innerHTML;
+                    }
+                    if(j==3)
+                    {
+                        from = col.getElementsByTagName('input')[0].value;
+                        to = col.getElementsByTagName('input')[1].value;
+
+                        timeAvailable = {
+                            shifts: shifts,
+                            from: from,
+                            to: to
+                        };
+
+                        freeTimes.push(timeAvailable);
+                    }
+               }
+            }
+
+
+            data = {
+              id: name,
+              isManager: manager,
+              hoursDesired: desiredHours,
+            };
+            data[dayOfWeek] = {freeTimes: freeTimes};
+
             let contextPath = "${pageContext.request.contextPath}";
-            let url = contextPath+ "/getDataFromBar";
-            // console.log(url);
+            let url = contextPath+ "/savePerson";
+            console.log(url);
             fetch(url, {
                             method: "POST",
-                            body: JSON.stringify(keywords),
+                            body: JSON.stringify(data),
                             headers:{
                                 "Content-Type": "application/json"
                             }
@@ -128,14 +171,41 @@ SOFTWARE.
                 }
             }).then(answer => {
                console.log(answer);
-               // fileArray = answer;
-               // populateData();
             }).catch(error => {
                 //alert("NO!!!!!!! Error = " + error);
             }).finally(() => {
 
             });
     }
+
+        function getAllPeople() {
+            let data = {};
+                let contextPath = "${pageContext.request.contextPath}";
+                let url = contextPath+ "/getAllPeople";
+                // console.log(url);
+                fetch(url, {
+                                method: "POST",
+                                body: JSON.stringify("String"),
+                                headers:{
+                                    "Content-Type": "application/json"
+                                }
+                            })
+                .then(httpresponseservlet => {
+                    if (httpresponseservlet.ok) {
+                        return httpresponseservlet.json();
+                    } else {
+                        //alert("NO!!!!!!!! Bad Http Status: " + httpresponseservlet.status);
+                    }
+                }).then(answer => {
+                   console.log(answer);
+
+                }).catch(error => {
+                    //alert("NO!!!!!!! Error = " + error);
+                }).finally(() => {
+
+                });
+        }
+
 
 
   // Handle the form submit button click

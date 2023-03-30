@@ -56,18 +56,22 @@ SOFTWARE.
     </header>
     <div class="container">
         <div class="wrapper">
-            <img class="search-icon" src="/imgs/search.png">
-            <input class="search" placeholder="Enter keywords or requirements..." type="text" onkeydown="search(this)">
-            <img class="clear-icon" src="/imgs/exit.png">
         </div>
     </div>
     <div id="resultContainer" class="container">
         <div class="leftContainer">
-            <ul id="results"></ul>
+            <ul id="results">
+                        <li id="Sunday">Sunday</li>
+                        <li id="Monday">Monday</li>
+                        <li id="Tuesday">Tuesday</li>
+                        <li id="Wednesday">Wednesday</li>
+                        <li id="Thursday">Thursday</li>
+                        <li id="Friday">Friday</li>
+                        <li id="Saturday">Saturday</li></ul>
+
         </div>
         <div class="rightContainer">
             <pre id="preTagId"></pre>
-            <img src="/imgs/download.png" alt="Download" class="downloadBtn" id="downloader" >
         </div>
     </div>
     <div id="card">
@@ -79,29 +83,37 @@ SOFTWARE.
 <script>
         document.addEventListener("DOMContentLoaded", () => {
             // populate results
-            // search bar
-            const clearIcon = document.querySelector(".clear-icon");
-            const searchBar = document.querySelector(".search");
-            document.querySelector(".search").addEventListener("keyup", () => {
-                if (searchBar.value && clearIcon.style.visibility != "visible") {
-                    clearIcon.style.visibility = "visible";
-                } else if (!searchBar.value) {
-                    clearIcon.style.visibility = "hidden";
-                }
-            });
+
+
         })
 
-        // search bar event listener
-        function search(e) {
-            if (event.key === 'Enter') {
-                if (e.value.length > 0) {
-                    sendData(e.value);
-                    document.getElementById("resultContainer").classList.remove("hidden");
-                } else {
-                    displayCard("error", "Error: input cannot be blank");
+         // download button event listener
+        document.querySelector(".leftContainer").addEventListener("click", (e) => {
+            console.log(e.target.id);
+            let functionId = e.target.id;
+            currentFunctionId = functionId;
+
+                // let formattedCode = [];
+                // formattedCode = fileArray.at(i).functionContents.split("\r\n");
+                //console.log(formattedCode);
+                //if (functionId == fileArray.at(i).functionId)
+                //{
+                    //console.log(fileArray);
+                    document.querySelector(".rightContainer").innerHTML = "";
+                    document.querySelector(".rightContainer").innerHTML = document.querySelector(".rightContainer").innerHTML +  "<pre>" + "Adam: 06:00-13:00\nMarcus: 06:00-13:00\nPerson3: 13:00-18:00" + "</pre>";
+
+                    //document.querySelector(".rightContainer").innerHTML = document.querySelector(".rightContainer").innerHTML + "<img src=\"/imgs/download.png\" alt=\"Download\" class=\"downloadBtn\" id=\"downloader\" onclick=\"downloadFile()\">";
+
+                if (functionId == "Sunday")
+                {
+                   document.querySelector(".rightContainer").innerHTML = "";
+
+                   document.querySelector(".rightContainer").innerHTML = document.querySelector(".rightContainer").innerHTML +  "<pre>" + "Adam: 05:00-13:00\nPerson3: 09:00-13:00\nMarcus: 13:00-14:00" + "</pre>";
+
                 }
-            }
-        }
+
+        //};
+    });
 
         function sendData(keywords) {
             let data = {};
