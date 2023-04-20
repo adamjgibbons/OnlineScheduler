@@ -26,6 +26,8 @@ public class QCompany extends EntityPathBase<Company> {
 
     public final StringPath companyScheduleJson = createString("companyScheduleJson");
 
+    public final StringPath generatedScheduleJson = createString("generatedScheduleJson");
+
     public final ListPath<Person, QPerson> personList = this.<Person, QPerson>createList("personList", Person.class, QPerson.class, PathInits.DIRECT2);
 
     public QCompany(String variable) {

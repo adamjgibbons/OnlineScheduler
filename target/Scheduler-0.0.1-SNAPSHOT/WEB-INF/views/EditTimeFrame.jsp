@@ -50,7 +50,7 @@ SOFTWARE.
                 <li><a href="ViewSchedules">View Schedules</a></li>
                 <li><a class="selected" href="EditTimeFrame">Edit Time Frame</a></li>
                 <li><a href="AddPerson">Add People</a></li>
-                <li><a href="EditPerson">Edit People</a></li>
+                <li><a href="EditPerson">Remove People</a></li>
             </ul>
         </div>
     </header>
@@ -82,7 +82,7 @@ SOFTWARE.
 
     function generateTable(){
         // Add the input fields for each day
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 7; i++) {
           let date = new Date();
           date.setDate(date.getDate() + i);
           let day = date.toLocaleDateString('en-US', {weekday: 'long'});
