@@ -119,6 +119,7 @@ SOFTWARE.
             let managerNeeded = "";
             let table = document.getElementById("schedule-table");
             for (var i = 1, row; row = table.rows[i]; i++) {
+                timesWeNeedWorkers = [];
                for (var j = 0, col; col = row.cells[j]; j++) {
                     if (j==0)
                     {
@@ -151,11 +152,12 @@ SOFTWARE.
                             managerNeeded: managerNeeded
                         };
                         timesWeNeedWorkers.push(timeAvailable);
+                        data[dayOfWeek] = {timesWeNeedWorkers: timesWeNeedWorkers};
+
                     }
                }
             }
 
-            data[dayOfWeek] = {timesWeNeedWorkers: timesWeNeedWorkers};
 
             let contextPath = "${pageContext.request.contextPath}";
             let url = contextPath+ "/saveCompanySchedule";

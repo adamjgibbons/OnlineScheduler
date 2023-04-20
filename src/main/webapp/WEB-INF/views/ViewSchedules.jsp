@@ -50,7 +50,7 @@ SOFTWARE.
                 <li><a class="selected" href="ViewSchedules">View Schedules</a></li>
                 <li><a href="EditTimeFrame">Edit Time Frame</a></li>
                 <li><a href="AddPerson">Add People</a></li>
-                <li><a href="EditPerson">Edit People</a></li>
+                <li><a href="EditPerson">Remove People</a></li>
             </ul>
         </div>
     </header>
@@ -81,8 +81,10 @@ SOFTWARE.
 
 </body>
 <script>
+        var finalSchedule;
         document.addEventListener("DOMContentLoaded", () => {
             // populate results
+            sendData("");
 
 
         })
@@ -93,24 +95,26 @@ SOFTWARE.
             let functionId = e.target.id;
             currentFunctionId = functionId;
 
-                // let formattedCode = [];
-                // formattedCode = fileArray.at(i).functionContents.split("\r\n");
-                //console.log(formattedCode);
+                console.log(Object.keys(finalSchedule).length);
+                console.log(finalSchedule[0]);
                 //if (functionId == fileArray.at(i).functionId)
                 //{
                     //console.log(fileArray);
                     document.querySelector(".rightContainer").innerHTML = "";
-                    document.querySelector(".rightContainer").innerHTML = document.querySelector(".rightContainer").innerHTML +  "<pre>" + "Adam: 06:00-13:00\nMarcus: 06:00-13:00\nPerson3: 13:00-18:00" + "</pre>";
+                    for (let i = 0; i < Object.keys(finalSchedule).length; i++){
+                        if(e.target.id == finalSchedule[i].Day){
+                            let ss = finalSchedule[i].timeWindow.split(":");
+                            for (const [key, value] of Object.entries(finalSchedule[i])) {
+                                //console.log(`${key}: ${value}`);
 
+                                if (value == "1.0" && key != 'Day' && key != 'timeWindow'){
+                                    document.querySelector(".rightContainer").innerHTML = document.querySelector(".rightContainer").innerHTML +  "<pre>" + key + ": "+ finalSchedule[i].timeWindow +"-"+ (parseInt(ss[0])+1)+ ":"+ ss[1] + "</pre>";
+                                }
+                            }
+                        }
+
+                    }
                     //document.querySelector(".rightContainer").innerHTML = document.querySelector(".rightContainer").innerHTML + "<img src=\"/imgs/download.png\" alt=\"Download\" class=\"downloadBtn\" id=\"downloader\" onclick=\"downloadFile()\">";
-
-                if (functionId == "Sunday")
-                {
-                   document.querySelector(".rightContainer").innerHTML = "";
-
-                   document.querySelector(".rightContainer").innerHTML = document.querySelector(".rightContainer").innerHTML +  "<pre>" + "Adam: 05:00-13:00\nPerson3: 09:00-13:00\nMarcus: 13:00-14:00" + "</pre>";
-
-                }
 
         //};
     });
@@ -118,7 +122,7 @@ SOFTWARE.
         function sendData(keywords) {
             let data = {};
                 let contextPath = "${pageContext.request.contextPath}";
-                let url = contextPath+ "/getDataFromBar";
+                let url = contextPath+ "/getGeneratedSchedule";
                 // console.log(url);
                 fetch(url, {
                                 method: "POST",
@@ -135,7 +139,7 @@ SOFTWARE.
                     }
                 }).then(answer => {
                    console.log(answer);
-                   // fileArray = answer;
+                   finalSchedule = answer;
                    // populateData();
                 }).catch(error => {
                     //alert("NO!!!!!!! Error = " + error);

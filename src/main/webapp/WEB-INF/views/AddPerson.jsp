@@ -50,7 +50,7 @@ SOFTWARE.
                 <li><a href="ViewSchedules">View Schedules</a></li>
                 <li><a href="EditTimeFrame">Edit Time Frame</a></li>
                 <li><a class="selected" href="AddPerson">Add People</a></li>
-                <li><a href="EditPerson">Edit People</a></li>
+                <li><a href="EditPerson">Remove People</a></li>
             </ul>
         </div>
     </header>
@@ -88,7 +88,7 @@ SOFTWARE.
 
     function generateTable(){
         // Add the input fields for each day
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 7; i++) {
           let date = new Date();
           date.setDate(date.getDate() + i);
           let day = date.toLocaleDateString('en-US', {weekday: 'long'});
@@ -115,6 +115,12 @@ SOFTWARE.
             let desiredHours = document.getElementById("desired-hours").value;
             let manager = document.getElementById('manager-yes').checked;
 
+            data = {
+              id: name,
+              isManager: manager,
+              hoursDesired: desiredHours,
+            };
+
             console.log(name);
             let freeTimes = [];
             let timeAvailable = {};
@@ -124,6 +130,7 @@ SOFTWARE.
             let shifts = "morning";
             let table = document.getElementById("schedule-table");
             for (var i = 1, row; row = table.rows[i]; i++) {
+                freeTimes = [];
                for (var j = 0, col; col = row.cells[j]; j++) {
                     if (j==0)
                     {
@@ -141,17 +148,10 @@ SOFTWARE.
                         };
 
                         freeTimes.push(timeAvailable);
+                        data[dayOfWeek] = {freeTimes: freeTimes};
                     }
                }
             }
-
-
-            data = {
-              id: name,
-              isManager: manager,
-              hoursDesired: desiredHours,
-            };
-            data[dayOfWeek] = {freeTimes: freeTimes};
 
             let contextPath = "${pageContext.request.contextPath}";
             let url = contextPath+ "/savePerson";

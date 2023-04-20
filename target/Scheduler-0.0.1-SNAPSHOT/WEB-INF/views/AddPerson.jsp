@@ -115,6 +115,12 @@ SOFTWARE.
             let desiredHours = document.getElementById("desired-hours").value;
             let manager = document.getElementById('manager-yes').checked;
 
+            data = {
+              id: name,
+              isManager: manager,
+              hoursDesired: desiredHours,
+            };
+
             console.log(name);
             let freeTimes = [];
             let timeAvailable = {};
@@ -124,6 +130,7 @@ SOFTWARE.
             let shifts = "morning";
             let table = document.getElementById("schedule-table");
             for (var i = 1, row; row = table.rows[i]; i++) {
+                freeTimes = [];
                for (var j = 0, col; col = row.cells[j]; j++) {
                     if (j==0)
                     {
@@ -141,17 +148,10 @@ SOFTWARE.
                         };
 
                         freeTimes.push(timeAvailable);
+                        data[dayOfWeek] = {freeTimes: freeTimes};
                     }
                }
             }
-
-
-            data = {
-              id: name,
-              isManager: manager,
-              hoursDesired: desiredHours,
-            };
-            data[dayOfWeek] = {freeTimes: freeTimes};
 
             let contextPath = "${pageContext.request.contextPath}";
             let url = contextPath+ "/savePerson";

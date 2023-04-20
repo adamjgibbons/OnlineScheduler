@@ -43,8 +43,12 @@ public interface SchedulerService {
     Object getDataFromBar(String keywords);
     Object savePerson(Person person);
     Object saveCompanySchedule(Company company);
+    Object saveGeneratedSchedule(Company company);
 
     void executeAlgorithm();
 
     ArrayList<Person> getAllPeopleFromCurrentCompany();
+    Object getGeneratedSchedule();
+
+    Object deletePerson(int id);
 }

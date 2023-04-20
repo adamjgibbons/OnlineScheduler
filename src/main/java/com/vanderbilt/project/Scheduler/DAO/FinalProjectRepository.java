@@ -27,5 +27,5 @@ import com.vanderbilt.project.Scheduler.DTO.Company;
 import org.springframework.data.repository.CrudRepository;
 
 public interface FinalProjectRepository extends CrudRepository<Company,Integer>, FinalProjectRepositoryCustom {
-
 }
+

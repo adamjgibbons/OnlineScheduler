@@ -47,6 +47,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Console;
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
@@ -121,6 +122,25 @@ public class SchedulerController {
         return schedulerService.getAllPeopleFromCurrentCompany();
     }
 
+    @ResponseBody
+    @PostMapping(value = "/getGeneratedSchedule", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Object getGeneratedSchedule(@RequestBody String keywords, Model model) {
+        System.out.println("You get here2");
+        File myObj = new File("scheduleDF.json");
+        if (myObj.delete()) {
+            System.out.println("Deleted the file: " + myObj.getName());
+        } else {
+            System.out.println("Failed to delete the file.");
+        }
+        return schedulerService.getGeneratedSchedule();
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/deletePerson", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Object deletePerson(@RequestBody int idNumber, Model model) {
+        System.out.println("You get here2");
+        return schedulerService.deletePerson(idNumber);
+    }
 }
 
 

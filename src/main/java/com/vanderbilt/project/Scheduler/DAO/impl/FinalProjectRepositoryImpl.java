@@ -29,9 +29,13 @@ import com.vanderbilt.project.Scheduler.DTO.Company;
 import com.vanderbilt.project.Scheduler.DTO.Person;
 import com.vanderbilt.project.Scheduler.DTO.QCompany;
 import com.vanderbilt.project.Scheduler.DTO.QPerson;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,6 +86,5 @@ public class FinalProjectRepositoryImpl extends QuerydslRepositorySupport implem
         }
         return returnList;
     }
-
 
 }

@@ -35,3 +35,4 @@ public interface FinalProjectRepositoryCustom{
     ArrayList<Person> getAllPeople();
     ArrayList<Person> getAllPeopleFromCurrentCompany(String companyName);
 }
+

@@ -51,7 +51,7 @@ SOFTWARE.
                 <li><a href="ViewSchedules">View Schedules</a></li>
                 <li><a href="EditTimeFrame">Edit Time Frame</a></li>
                 <li><a href="AddPerson">Add People</a></li>
-                <li><a class="selected" href="EditPerson">Edit People</a></li>
+                <li><a class="selected" href="EditPerson">Remove People</a></li>
             </ul>
         </div>
     </header>
@@ -75,8 +75,10 @@ SOFTWARE.
                     let personId = e.target.id;
 
 
-                    changePageLook(personId , "Adam");
+                    deletePerson(personId);
                 });
+
+                getPeople("");
                 populateData();
             });
             function populateData() {
@@ -99,15 +101,15 @@ SOFTWARE.
                 arrayOfPeople[1] = arrayOfPeople3;
                 arrayOfPeople[2] = arrayOfPeople4;
 
-
-                for (let i = 0; i < arrayOfPeople.length; i++) {
-                    console.log( arrayOfPeople.at(i).personName);
+                console.log(Object.keys(fileArray).length);
+                for (let i = 0; i < Object.keys(fileArray).length; i++) {
+                    console.log( fileArray[i].personName);
                     people.push(new Person(
-                        arrayOfPeople.at(i).personName,
-                        arrayOfPeople.at(i).personId
+                        fileArray[i].personName,
+                        fileArray[i].personId
                     ));
                 }
-                console.log(arrayOfPeople);
+                console.log(fileArray);
                 let ul = document.getElementById("results");
                 ul.innerHTML = "";
                 for (let person of people) {
@@ -133,7 +135,7 @@ SOFTWARE.
                                 <li><a href="ViewSchedules">View Schedules</a></li>
                                 <li><a href="EditTimeFrame">Edit Time Frame</a></li>
                                 <li><a href="AddPerson">Add People</a></li>
-                                <li><a class="selected" href="EditPerson">Edit People</a></li>
+                                <li><a class="selected" href="EditPerson">Remove People</a></li>
                             </ul>
                         </div>
                     </header>
@@ -168,7 +170,7 @@ SOFTWARE.
 
             function generateTable(){
                 // Add the input fields for each day
-                for (let i = 0; i < 14; i++) {
+                for (let i = 0; i < 7; i++) {
                   let date = new Date();
                   date.setDate(date.getDate() + i);
                   let day = date.toLocaleDateString('en-US', {weekday: 'long'});
@@ -188,10 +190,38 @@ SOFTWARE.
                 }
             }
 
+
+                        function deletePerson(idNumber) {
+                            let data = {};
+                                let contextPath = "${pageContext.request.contextPath}";
+                                let url = contextPath+ "/deletePerson";
+                                //console.log(url);
+                                fetch(url, {
+                                                method: "POST",
+                                                body: JSON.stringify(idNumber),
+                                                headers:{
+                                                    "Content-Type": "application/json"
+                                                }
+                                            })
+                                .then(httpresponseservlet => {
+                                    if (httpresponseservlet.ok) {
+                                        return httpresponseservlet.json();
+                                    } else {
+                                        //alert("NO!!!!!!!! Bad Http Status: " + httpresponseservlet.status);
+                                    }
+                                }).then(answer => {
+
+                                }).catch(error => {
+                                    //alert("NO!!!!!!! Error = " + error);
+                                }).finally(() => {
+                                    location.reload()
+                                });
+                        }
+
             function getPeople(keywords) {
                 let data = {};
                     let contextPath = "${pageContext.request.contextPath}";
-                    let url = contextPath+ "/getPeople";
+                    let url = contextPath+ "/getAllPeople";
                     //console.log(url);
                     fetch(url, {
                                     method: "POST",

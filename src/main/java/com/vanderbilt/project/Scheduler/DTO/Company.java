@@ -30,6 +30,17 @@ public class Company implements Serializable{
     @Column(name = "company_schedule_json", columnDefinition = "text")
     private String companyScheduleJson;
 
+    public String getGeneratedScheduleJson() {
+        return generatedScheduleJson;
+    }
+
+    public void setGeneratedScheduleJson(String generatedScheduleJson) {
+        this.generatedScheduleJson = generatedScheduleJson;
+    }
+
+    @Column(name = "generated_schedule_json", columnDefinition = "text")
+    private String generatedScheduleJson;
+
     public int getCompanyId() {
         return companyId;
     }
